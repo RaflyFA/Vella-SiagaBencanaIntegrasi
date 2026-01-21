@@ -139,7 +139,7 @@ const TrackingView = () => {
         <p className="text-muted-foreground mt-1">Monitor lokasi dan status kesehatan pengungsi via Safe-Trace</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Survivor List */}
         <div className="bento-card">
           {/* Search */}
@@ -155,7 +155,7 @@ const TrackingView = () => {
           </div>
 
           {/* List */}
-          <div className="space-y-2 max-h-[500px] overflow-y-auto">
+          <div className="space-y-2 max-h-[300px] md:max-h-[400px] lg:max-h-[500px] overflow-y-auto">
             {filteredSurvivors.map((person) => (
               <button
                 key={person.id}
@@ -182,9 +182,9 @@ const TrackingView = () => {
         </div>
 
         {/* Map Area */}
-        <div className="bento-card">
+        <div className="bento-card md:col-span-2 lg:col-span-1">
           <h2 className="font-semibold text-foreground mb-4">Peta Lokasi</h2>
-          <div className="relative w-full h-[400px] bg-muted rounded-lg overflow-hidden"
+          <div className="relative w-full h-[250px] md:h-[350px] lg:h-[400px] bg-muted rounded-lg overflow-hidden"
             style={{
               backgroundImage: `
                 radial-gradient(circle at 1px 1px, hsl(var(--muted-foreground) / 0.15) 1px, transparent 0)
