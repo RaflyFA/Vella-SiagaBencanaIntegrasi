@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Droplets, 
-  Bell, 
+import {
+  LayoutDashboard,
+  Users,
+  Droplets,
+  Bell,
   Shield,
   User,
   ChevronLeft,
@@ -27,12 +27,12 @@ const menuItems = [
   { id: 'alerts', label: 'Peringatan & Notifikasi', icon: Bell },
 ];
 
-const Sidebar = ({ 
-  activeView, 
-  onNavigate, 
+const Sidebar = ({
+  activeView,
+  onNavigate,
   onCollapsedChange,
   mobileMenuOpen = false,
-  onMobileMenuToggle 
+  onMobileMenuToggle
 }: SidebarProps) => {
   const [collapsed, setCollapsed] = useState(false);
 
@@ -51,7 +51,7 @@ const Sidebar = ({
             <Shield className="w-4 h-4 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="font-bold text-sidebar-foreground text-sm">Sistem Siaga</h1>
+            <h1 className="font-bold text-sidebar-foreground text-sm">Vella</h1>
           </div>
         </div>
         <button
@@ -64,17 +64,16 @@ const Sidebar = ({
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => onMobileMenuToggle?.(false)}
         />
       )}
 
       {/* Mobile Sidebar */}
-      <aside 
-        className={`fixed top-14 left-0 bottom-0 w-64 bg-sidebar flex flex-col z-50 lg:hidden transition-transform duration-300 ${
-          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+      <aside
+        className={`fixed top-14 left-0 bottom-0 w-64 bg-sidebar flex flex-col z-50 lg:hidden transition-transform duration-300 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
           {menuItems.map((item) => {
@@ -107,10 +106,9 @@ const Sidebar = ({
       </aside>
 
       {/* Desktop Sidebar */}
-      <aside 
-        className={`fixed left-0 top-0 h-screen bg-sidebar flex-col transition-all duration-300 z-50 hidden lg:flex ${
-          collapsed ? 'w-20' : 'w-64'
-        }`}
+      <aside
+        className={`fixed left-0 top-0 h-screen bg-sidebar flex-col transition-all duration-300 z-50 hidden lg:flex ${collapsed ? 'w-20' : 'w-64'
+          }`}
       >
         {/* Logo */}
         <div className="p-5 border-b border-sidebar-border">
@@ -120,7 +118,7 @@ const Sidebar = ({
             </div>
             {!collapsed && (
               <div className="animate-fade-in">
-                <h1 className="font-bold text-sidebar-foreground text-sm">Sistem Siaga</h1>
+                <h1 className="font-bold text-sidebar-foreground text-sm">Vella</h1>
                 <p className="text-xs text-sidebar-foreground/60">Bencana Terpadu</p>
               </div>
             )}
