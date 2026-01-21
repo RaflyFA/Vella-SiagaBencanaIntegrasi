@@ -141,24 +141,25 @@ const AlertsView = () => {
   return (
     <div className="animate-fade-in">
       {/* Header */}
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Peringatan & Notifikasi</h1>
-          <p className="text-muted-foreground mt-1">Pantau semua alert sistem dan tindakan darurat</p>
+          <h1 className="text-xl md:text-2xl font-bold text-foreground">Peringatan & Notifikasi</h1>
+          <p className="text-sm md:text-base text-muted-foreground mt-1">Pantau semua alert sistem dan tindakan darurat</p>
         </div>
         {unreadCount > 0 && (
           <button
             onClick={markAllAsRead}
-            className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity flex items-center gap-2"
+            className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity flex items-center gap-2 self-start"
           >
             <Check className="w-4 h-4" />
-            Tandai Semua Dibaca
+            <span className="hidden sm:inline">Tandai Semua Dibaca</span>
+            <span className="sm:hidden">Tandai Dibaca</span>
           </button>
         )}
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
         <div className="bento-card">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center">
@@ -256,8 +257,8 @@ const AlertsView = () => {
                 !alert.read ? 'bg-card' : 'bg-muted/30'
               }`}
             >
-              <div className="flex items-start gap-4">
-                <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${
+              <div className="flex items-start gap-3 md:gap-4">
+                <div className={`flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center ${
                   alert.type === 'critical' ? 'bg-destructive/10' :
                   alert.type === 'warning' ? 'bg-warning/10' : 'bg-primary/10'
                 }`}>
@@ -276,16 +277,16 @@ const AlertsView = () => {
                         )}
                       </div>
                       <p className="text-sm text-muted-foreground mb-2">{alert.description}</p>
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3" />
-                          {alert.location}
+                          <MapPin className="w-3 h-3 flex-shrink-0" />
+                          <span className="truncate max-w-[120px] md:max-w-none">{alert.location}</span>
                         </span>
                         <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
+                          <Clock className="w-3 h-3 flex-shrink-0" />
                           {alert.time}
                         </span>
-                        <span className="flex items-center gap-1 capitalize">
+                        <span className="hidden sm:flex items-center gap-1 capitalize">
                           {getCategoryIcon(alert.category)}
                           {alert.category === 'infrastructure' ? 'Infrastruktur' : 
                            alert.category === 'person' ? 'Warga' : 'Air'}

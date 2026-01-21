@@ -52,7 +52,7 @@ const WaterView = () => {
         <p className="text-muted-foreground mt-1">Sistem pemantauan Water-Gen untuk filtrasi air darurat</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Left Column - Gauges */}
         <div className="space-y-4">
           {/* TDS Gauge */}
@@ -66,7 +66,7 @@ const WaterView = () => {
             
             {/* Circular Gauge */}
             <div className="flex justify-center mb-4">
-              <div className="relative w-40 h-40">
+              <div className="relative w-32 h-32 md:w-40 md:h-40">
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                   <circle
                     cx="50"
@@ -89,8 +89,8 @@ const WaterView = () => {
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-3xl font-bold text-foreground">{tdsValue}</span>
-                  <span className="text-sm text-muted-foreground">ppm</span>
+                  <span className="text-2xl md:text-3xl font-bold text-foreground">{tdsValue}</span>
+                  <span className="text-xs md:text-sm text-muted-foreground">ppm</span>
                 </div>
               </div>
             </div>
@@ -108,7 +108,7 @@ const WaterView = () => {
             </div>
 
             <div className="flex justify-center mb-4">
-              <div className="relative w-40 h-40">
+              <div className="relative w-32 h-32 md:w-40 md:h-40">
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                   <circle
                     cx="50"
@@ -131,8 +131,8 @@ const WaterView = () => {
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-3xl font-bold text-foreground">{phValue}</span>
-                  <span className="text-sm text-muted-foreground">pH</span>
+                  <span className="text-2xl md:text-3xl font-bold text-foreground">{phValue}</span>
+                  <span className="text-xs md:text-sm text-muted-foreground">pH</span>
                 </div>
               </div>
             </div>
@@ -247,7 +247,7 @@ const WaterView = () => {
         </div>
 
         {/* Right Column - Production Chart */}
-        <div className="bento-card">
+        <div className="bento-card md:col-span-2 lg:col-span-1">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-foreground">Produksi Air Hari Ini</h2>
             <span className="text-sm text-muted-foreground">Total: 491 L</span>
