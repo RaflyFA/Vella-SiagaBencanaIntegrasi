@@ -47,8 +47,8 @@ const Sidebar = ({
       {/* Mobile Header */}
       <header className="fixed top-0 left-0 right-0 h-14 bg-sidebar border-b border-sidebar-border flex items-center justify-between px-4 z-50 lg:hidden">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-            <Shield className="w-4 h-4 text-primary-foreground" />
+          <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-white p-1">
+            <img src="/logo.png" alt="Vella" className="w-full h-full object-cover" />
           </div>
           <div>
             <h1 className="font-bold text-sidebar-foreground text-sm">Vella</h1>
@@ -113,8 +113,8 @@ const Sidebar = ({
         {/* Logo */}
         <div className="p-5 border-b border-sidebar-border">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0">
-              <Shield className="w-5 h-5 text-primary-foreground" />
+            <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-white p-1">
+              <img src="/logo.png" alt="Vella" className="w-full h-full object-cover" />
             </div>
             {!collapsed && (
               <div className="animate-fade-in">

@@ -32,14 +32,11 @@ const DashboardView = ({ onNavigate }: DashboardViewProps) => {
       <div className="flex flex-col lg:flex-row gap-4 mb-6">
         {/* NFC Scan Section */}
         <div className="flex flex-col lg:w-[280px] flex-shrink-0">
-          {/* Label - Show on all screen sizes */}
-          <p className="font-bold text-foreground mb-2">Scan NFC</p>
-
           {/* NFC Scan Card - Scanner Style */}
-          {/* Mobile: Square | Tablet: Square | Desktop: Large left side */}
+          {/* Mobile: Square | Tablet: Rectangle | Desktop: Large left side */}
           <button
             onClick={() => onNavigate?.('nfc-scan')}
-            className="relative bg-transparent border-2 border-dashed border-primary/40 rounded-xl p-4 md:p-6 lg:p-8 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group overflow-hidden flex items-center justify-center aspect-square md:aspect-[3/1] lg:aspect-auto lg:min-h-[250px] lg:flex-1"
+            className="relative bg-transparent border-2 border-dashed border-primary/40 rounded-xl p-4 md:p-6 lg:p-8 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group overflow-hidden flex flex-col items-center justify-center aspect-square md:aspect-[3/1] lg:aspect-auto lg:min-h-[250px] lg:flex-1"
           >
             {/* Corner Brackets */}
             <div className="absolute top-3 left-3 w-5 h-5 md:w-6 md:h-6 border-t-2 border-l-2 border-primary rounded-tl-lg" />
@@ -51,6 +48,9 @@ const DashboardView = ({ onNavigate }: DashboardViewProps) => {
             <div className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform relative z-10">
               <Nfc className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 text-primary animate-pulse" />
             </div>
+
+            {/* Label inside box */}
+            <p className="mt-3 text-sm font-bold text-primary/50">Scan NFC</p>
           </button>
         </div>
 
