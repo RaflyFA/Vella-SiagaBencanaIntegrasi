@@ -3,13 +3,14 @@ import {
   LayoutDashboard,
   Users,
   Droplets,
-  Bell,
+  MessageSquare,
   Shield,
   User,
   ChevronLeft,
   ChevronRight,
   Menu,
-  X
+  X,
+  Stethoscope
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -24,7 +25,8 @@ const menuItems = [
   { id: 'dashboard', label: 'Dashboard Utama', icon: LayoutDashboard },
   { id: 'tracking', label: 'Pelacakan Warga', icon: Users },
   { id: 'water', label: 'Monitor Kualitas Air', icon: Droplets },
-  { id: 'alerts', label: 'Peringatan & Notifikasi', icon: Bell },
+  { id: 'medic', label: 'Hubungi Medis', icon: Stethoscope },
+  { id: 'messages', label: 'Pesan Tim', icon: MessageSquare },
 ];
 
 const Sidebar = ({

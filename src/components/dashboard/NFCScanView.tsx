@@ -7,7 +7,9 @@ import {
     Download,
     Upload,
     Nfc,
-    Watch
+    Watch,
+    User,
+    Search
 } from 'lucide-react';
 
 interface PersonData {
@@ -26,33 +28,89 @@ interface PersonData {
     currentMedication: string[];
 }
 
-// Mock data - simulating scanned NFC data
-const mockPersonData: PersonData = {
-    id: 'NFC-001',
-    name: 'Budi Santoso',
-    age: 45,
-    bloodType: 'O+',
-    medicalHistory: ['Hipertensi', 'Diabetes Tipe 2'],
-    allergies: ['Penisilin', 'Sulfa'],
-    emergencyContact: {
-        name: 'Siti Rahayu',
-        relation: 'Istri',
-        phone: '+62 812-3456-7890'
+// Mock list of people for write selection
+// ID Format: GA = Gelang Anak (0-17), GD = Gelang Dewasa (18-59), GL = Gelang Lansia (60+)
+const peopleList: PersonData[] = [
+    {
+        id: 'GD-01',
+        name: 'Budi Santoso',
+        age: 45,
+        bloodType: 'O+',
+        medicalHistory: ['Hipertensi', 'Diabetes Tipe 2'],
+        allergies: ['Penisilin', 'Sulfa'],
+        emergencyContact: { name: 'Siti Rahayu', relation: 'Istri', phone: '+62 812-3456-7890' },
+        lastCheckup: '15 Januari 2026',
+        currentMedication: ['Amlodipine 5mg', 'Metformin 500mg']
     },
-    lastCheckup: '15 Januari 2026',
-    currentMedication: ['Amlodipine 5mg', 'Metformin 500mg']
-};
+    {
+        id: 'GA-01',
+        name: 'Andi Pratama',
+        age: 8,
+        bloodType: 'A+',
+        medicalHistory: [],
+        allergies: ['Kacang'],
+        emergencyContact: { name: 'Dewi Pratama', relation: 'Ibu', phone: '+62 813-1111-2222' },
+        lastCheckup: '10 Januari 2026',
+        currentMedication: []
+    },
+    {
+        id: 'GL-01',
+        name: 'Haji Suharto',
+        age: 72,
+        bloodType: 'B+',
+        medicalHistory: ['Hipertensi', 'Rematik'],
+        allergies: [],
+        emergencyContact: { name: 'Eko Prasetyo', relation: 'Anak', phone: '+62 814-9012-3456' },
+        lastCheckup: '12 Januari 2026',
+        currentMedication: ['Amlodipine 10mg', 'Glucosamine']
+    },
+    {
+        id: 'GD-02',
+        name: 'Siti Aminah',
+        age: 38,
+        bloodType: 'AB+',
+        medicalHistory: ['Asma'],
+        allergies: ['Debu', 'Bulu kucing'],
+        emergencyContact: { name: 'Ahmad Pratama', relation: 'Suami', phone: '+62 815-6789-0123' },
+        lastCheckup: '18 Januari 2026',
+        currentMedication: ['Salbutamol inhaler']
+    },
+    {
+        id: 'GA-02',
+        name: 'Putri Rahayu',
+        age: 12,
+        bloodType: 'O-',
+        medicalHistory: [],
+        allergies: ['Seafood'],
+        emergencyContact: { name: 'Siti Aminah', relation: 'Ibu', phone: '+62 816-2345-6789' },
+        lastCheckup: '14 Januari 2026',
+        currentMedication: []
+    },
+    {
+        id: 'GL-02',
+        name: 'Nenek Aminah',
+        age: 68,
+        bloodType: 'A+',
+        medicalHistory: ['Diabetes', 'Katarak'],
+        allergies: ['Penisilin'],
+        emergencyContact: { name: 'Budi Santoso', relation: 'Anak', phone: '+62 817-3456-7890' },
+        lastCheckup: '16 Januari 2026',
+        currentMedication: ['Metformin 500mg']
+    }
+];
 
 interface NFCScanViewProps {
     onBack: () => void;
 }
 
-type NFCMode = 'select' | 'read-waiting' | 'write-waiting' | 'result' | 'write-success';
+type NFCMode = 'select' | 'read-waiting' | 'write-select' | 'write-waiting' | 'result' | 'write-success';
 
 const NFCScanView = ({ onBack }: NFCScanViewProps) => {
     const [mode, setMode] = useState<NFCMode>('select');
     const [isScanning, setIsScanning] = useState(false);
     const [scannedData, setScannedData] = useState<PersonData | null>(null);
+    const [selectedPerson, setSelectedPerson] = useState<PersonData | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const startReadMode = () => {
         setMode('read-waiting');
@@ -60,13 +118,18 @@ const NFCScanView = ({ onBack }: NFCScanViewProps) => {
 
         // Simulate NFC detection after 3 seconds
         setTimeout(() => {
-            setScannedData(mockPersonData);
+            setScannedData(peopleList[0]);
             setMode('result');
             setIsScanning(false);
         }, 3000);
     };
 
-    const startWriteMode = () => {
+    const showWriteSelection = () => {
+        setMode('write-select');
+    };
+
+    const selectPersonForWrite = (person: PersonData) => {
+        setSelectedPerson(person);
         setMode('write-waiting');
         setIsScanning(true);
 
@@ -80,8 +143,14 @@ const NFCScanView = ({ onBack }: NFCScanViewProps) => {
     const handleBack = () => {
         setMode('select');
         setScannedData(null);
+        setSelectedPerson(null);
         setIsScanning(false);
+        setSearchQuery('');
     };
+
+    const filteredPeople = peopleList.filter(person =>
+        person.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     useEffect(() => {
         return () => {
@@ -120,15 +189,76 @@ const NFCScanView = ({ onBack }: NFCScanViewProps) => {
 
                     {/* Write NFC */}
                     <button
-                        onClick={startWriteMode}
+                        onClick={showWriteSelection}
                         className="bento-card p-6 md:p-8 hover:border-secondary hover:bg-secondary/5 transition-all group text-left"
                     >
                         <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-secondary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                             <Upload className="w-8 h-8 md:w-10 md:h-10 text-secondary" />
                         </div>
                         <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">Kirim Data</h3>
-                        <p className="text-sm text-muted-foreground">Tempelkan gelang NFC untuk mengirim data pengungsi</p>
+                        <p className="text-sm text-muted-foreground">Pilih pengungsi dan kirim data ke gelang NFC</p>
                     </button>
+                </div>
+            </div>
+        );
+    }
+
+    // Write Selection Screen - List of people
+    if (mode === 'write-select') {
+        return (
+            <div className="animate-fade-in">
+                <div className="mb-4 md:mb-6">
+                    <button
+                        onClick={handleBack}
+                        className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-3"
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        <span className="text-sm">Kembali</span>
+                    </button>
+                    <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-foreground">Pilih Pengungsi</h1>
+                    <p className="text-sm md:text-base text-muted-foreground mt-1">Pilih data pengungsi yang akan dikirim ke gelang NFC</p>
+                </div>
+
+                {/* Search Box */}
+                <div className="mb-4">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <input
+                            type="text"
+                            placeholder="Cari nama pengungsi..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-10 pr-4 py-3 rounded-lg bg-muted border-0 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary/50"
+                        />
+                    </div>
+                </div>
+
+                {/* People List */}
+                <div className="space-y-3">
+                    {filteredPeople.map((person) => (
+                        <button
+                            key={person.id}
+                            onClick={() => selectPersonForWrite(person)}
+                            className="w-full bento-card p-4 hover:border-secondary hover:bg-secondary/5 transition-all text-left flex items-center gap-4"
+                        >
+                            <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                                <User className="w-6 h-6 text-secondary" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <h3 className="font-semibold text-foreground">{person.name}</h3>
+                                <p className="text-sm text-muted-foreground">{person.age} tahun • {person.bloodType}</p>
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                                {person.id}
+                            </div>
+                        </button>
+                    ))}
+
+                    {filteredPeople.length === 0 && (
+                        <div className="text-center py-8 text-muted-foreground">
+                            <p>Tidak ada pengungsi ditemukan</p>
+                        </div>
+                    )}
                 </div>
             </div>
         );
@@ -216,6 +346,14 @@ const NFCScanView = ({ onBack }: NFCScanViewProps) => {
                 </div>
 
                 <div className="flex flex-col items-center justify-center py-12 md:py-20">
+                    {/* Selected person info */}
+                    {selectedPerson && (
+                        <div className="mb-6 p-4 rounded-xl bg-secondary/10 border border-secondary/20 text-center">
+                            <p className="text-sm text-muted-foreground">Mengirim data:</p>
+                            <p className="font-bold text-foreground">{selectedPerson.name}</p>
+                        </div>
+                    )}
+
                     {/* Animated bracelet/watch icon */}
                     <div className="relative mb-8">
                         <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-secondary/10 flex items-center justify-center animate-pulse">
@@ -287,9 +425,12 @@ const NFCScanView = ({ onBack }: NFCScanViewProps) => {
                         <Upload className="w-12 h-12 md:w-16 md:h-16 text-success" />
                     </div>
                     <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2">Data Berhasil Dikirim!</h2>
-                    <p className="text-muted-foreground text-center max-w-md mb-6">
-                        Data pengungsi telah berhasil ditulis ke gelang NFC
-                    </p>
+                    {selectedPerson && (
+                        <p className="text-muted-foreground text-center max-w-md mb-2">
+                            Data <span className="font-semibold text-foreground">{selectedPerson.name}</span> telah berhasil ditulis ke gelang NFC
+                        </p>
+                    )}
+                    <p className="text-sm text-muted-foreground mb-6">ID: {selectedPerson?.id}</p>
                     <button
                         onClick={onBack}
                         className="px-6 py-3 rounded-lg gradient-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
@@ -343,17 +484,25 @@ const NFCScanView = ({ onBack }: NFCScanViewProps) => {
                             <div>
                                 <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Riwayat Penyakit</p>
                                 <div className="flex flex-wrap gap-2">
-                                    {scannedData.medicalHistory.map((item, i) => (
-                                        <span key={i} className="stat-badge-warning text-xs">{item}</span>
-                                    ))}
+                                    {scannedData.medicalHistory.length > 0 ? (
+                                        scannedData.medicalHistory.map((item, i) => (
+                                            <span key={i} className="stat-badge-warning text-xs">{item}</span>
+                                        ))
+                                    ) : (
+                                        <span className="text-sm text-muted-foreground">Tidak ada riwayat</span>
+                                    )}
                                 </div>
                             </div>
                             <div>
                                 <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Obat yang Dikonsumsi</p>
                                 <div className="flex flex-wrap gap-2">
-                                    {scannedData.currentMedication.map((item, i) => (
-                                        <span key={i} className="stat-badge-muted text-xs">{item}</span>
-                                    ))}
+                                    {scannedData.currentMedication.length > 0 ? (
+                                        scannedData.currentMedication.map((item, i) => (
+                                            <span key={i} className="stat-badge-muted text-xs">{item}</span>
+                                        ))
+                                    ) : (
+                                        <span className="text-sm text-muted-foreground">Tidak ada obat</span>
+                                    )}
                                 </div>
                             </div>
                             <div>
@@ -380,9 +529,11 @@ const NFCScanView = ({ onBack }: NFCScanViewProps) => {
                                 <p className="text-sm text-muted-foreground">Tidak ada alergi tercatat</p>
                             )}
                         </div>
-                        <div className="mt-4 p-3 rounded-lg bg-warning/10">
-                            <p className="text-xs text-warning font-medium">⚠️ Peringatan: Pastikan untuk memeriksa alergi sebelum memberikan obat</p>
-                        </div>
+                        {scannedData.allergies.length > 0 && (
+                            <div className="mt-4 p-3 rounded-lg bg-warning/10">
+                                <p className="text-xs text-warning font-medium">⚠️ Peringatan: Pastikan untuk memeriksa alergi sebelum memberikan obat</p>
+                            </div>
+                        )}
                     </div>
                 </div>
 

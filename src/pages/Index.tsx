@@ -3,8 +3,9 @@ import Sidebar from '@/components/dashboard/Sidebar';
 import DashboardView from '@/components/dashboard/DashboardView';
 import TrackingView from '@/components/dashboard/TrackingView';
 import WaterView from '@/components/dashboard/WaterView';
-import AlertsView from '@/components/dashboard/AlertsView';
+import MessagesView from '@/components/dashboard/MessagesView';
 import NFCScanView from '@/components/dashboard/NFCScanView';
+import MedicView from '@/components/dashboard/MedicView';
 
 const Index = () => {
   const [activeView, setActiveView] = useState('dashboard');
@@ -19,8 +20,10 @@ const Index = () => {
         return <TrackingView />;
       case 'water':
         return <WaterView />;
-      case 'alerts':
-        return <AlertsView />;
+      case 'medic':
+        return <MedicView />;
+      case 'messages':
+        return <MessagesView />;
       case 'nfc-scan':
         return <NFCScanView onBack={() => handleNavigate('dashboard')} />;
       default:

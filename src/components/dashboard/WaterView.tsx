@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { 
-  Droplets, 
-  ThermometerSun, 
-  Gauge, 
-  Filter, 
-  Zap, 
+import {
+  Droplets,
+  ThermometerSun,
+  Gauge,
+  Filter,
+  Zap,
   Lock,
   CheckCircle,
   AlertTriangle
@@ -63,7 +63,7 @@ const WaterView = () => {
                 {tdsStatus.label}
               </span>
             </div>
-            
+
             {/* Circular Gauge */}
             <div className="flex justify-center mb-4">
               <div className="relative w-32 h-32 md:w-40 md:h-40">
@@ -161,7 +161,7 @@ const WaterView = () => {
                   <span className="font-bold text-foreground">{filterHealth}%</span>
                 </div>
                 <div className="h-4 bg-muted rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full bg-gradient-to-r from-primary to-[hsl(189_82%_45%)] rounded-full transition-all duration-1000"
                     style={{ width: `${filterHealth}%` }}
                   />
@@ -201,8 +201,8 @@ const WaterView = () => {
                 <div className="flex items-center gap-3">
                   <Droplets className="w-5 h-5 text-primary" />
                   <div>
-                    <p className="text-sm font-medium text-foreground">Pompa Otomatis</p>
-                    <p className="text-xs text-muted-foreground">Aktifkan untuk distribusi air</p>
+                    <p className="text-sm font-medium text-foreground">Isi Tangki</p>
+                    <p className="text-xs text-muted-foreground">Aktifkan untuk mengisi tangki air</p>
                   </div>
                 </div>
                 <button
@@ -218,8 +218,8 @@ const WaterView = () => {
                 <div className="flex items-center gap-3">
                   <Zap className="w-5 h-5 text-warning" />
                   <div>
-                    <p className="text-sm font-medium text-foreground">Sterilisasi UV-C</p>
-                    <p className="text-xs text-muted-foreground">Membunuh bakteri & virus</p>
+                    <p className="text-sm font-medium text-foreground">Sterilisasi Air</p>
+                    <p className="text-xs text-muted-foreground">Aktifkan untuk membersihkan air</p>
                   </div>
                 </div>
                 <button
@@ -233,11 +233,10 @@ const WaterView = () => {
               {/* Emergency Lock */}
               <button
                 onClick={() => setFilterLocked(!filterLocked)}
-                className={`w-full p-3 rounded-lg flex items-center justify-center gap-2 font-medium transition-all ${
-                  filterLocked 
+                className={`w-full p-3 rounded-lg flex items-center justify-center gap-2 font-medium transition-all ${filterLocked
                     ? 'bg-destructive text-destructive-foreground'
                     : 'border-2 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground'
-                }`}
+                  }`}
               >
                 <Lock className="w-4 h-4" />
                 {filterLocked ? 'Filter Terkunci - Kontaminasi Terdeteksi' : 'Kunci Filter Darurat'}
@@ -288,7 +287,7 @@ const WaterView = () => {
                 ) : (
                   <AlertTriangle className="w-4 h-4 text-warning" />
                 )}
-                <span className="text-muted-foreground">Pompa {pumpActive ? 'Aktif' : 'Mati'}</span>
+                <span className="text-muted-foreground">Tangki {pumpActive ? 'Mengisi' : 'Mati'}</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 {uvActive ? (
@@ -296,7 +295,7 @@ const WaterView = () => {
                 ) : (
                   <AlertTriangle className="w-4 h-4 text-warning" />
                 )}
-                <span className="text-muted-foreground">UV-C {uvActive ? 'Aktif' : 'Mati'}</span>
+                <span className="text-muted-foreground">Sterilisasi {uvActive ? 'Aktif' : 'Mati'}</span>
               </div>
             </div>
           </div>
